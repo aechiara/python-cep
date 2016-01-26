@@ -17,4 +17,5 @@ staticfiles/
 __pycache__
 .idea
 .egg-info
+.egg*
 pip-selfcheck.json
