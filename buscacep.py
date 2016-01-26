@@ -58,7 +58,7 @@ def busca_cep_correios(cep):
         raise Exception("Erro acessando site dos correios!", resp.status_code)
 
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(resp2.text)
+    soup = BeautifulSoup(resp2.text, "html.parser")
     value_cells = soup.findAll('td', attrs={'class': 'value'})
 
     texto_clean = clean_html_list(value_cells)

@@ -23,7 +23,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.2.1',
+    version='0.2.2',
 
     description='Busca endereço a partir de um CEP no site dos Correios',
     long_description=long_description,
@@ -76,5 +76,4 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['requests>2.5', 'beautifulsoup4>3.4', ],
-
 )
