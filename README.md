@@ -1,8 +1,6 @@
 Busca endereço a partir de um CEP no site dos Correios
 
 ```
-#!python
-
 pip install python-cep
 
 import buscacep
