@@ -1,2 +1,0 @@
-requests>2.5
-beautifulsoup4>3.4
