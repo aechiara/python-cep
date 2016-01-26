@@ -1,0 +1,32 @@
+Metadata-Version: 1.1
+Name: python-cep
+Version: 0.2.1
+Summary: Busca endereço a partir de um CEP no site dos Correios
+Home-page: https://github.com/aechiara/python-cep
+Author: Alex Eduardo Chiaranda
+Author-email: aechiara@gmail.com
+License: MIT
+Description: Busca endereço a partir de um CEP no site dos Correios
+        
+        ```
+        #!python
+        
+        pip install python-cep
+        
+        import buscacep
+        
+        res = buscacep.busca_cep_correios('01310000')
+        
+        # as dict (and convert to json if needed)
+        res = buscacep.busca_cep_correios_as_dict('01310000')
+        
+        ```
+        
+Keywords: cep correios logradouro
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
