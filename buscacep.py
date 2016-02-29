@@ -34,6 +34,14 @@ def clean_html_list(html_list=None):
 
     return lista
 
+def get_info(resultado):
+    info = []
+
+    for i in resultado.split("\n"):
+        if len(i.strip()) > 0:
+            info.append(i.strip())
+
+    return Logradouro(info)
 
 def busca_cep_correios(cep):
     ''' Pesquisa o CEP informado no site dos correios '''
@@ -43,30 +51,26 @@ def busca_cep_correios(cep):
     elif not cep.isdigit() or len(cep) != 8:
         raise AttributeError("O CEP deve conter apenas 8 dígitos!")
 
-    url = 'http://www.buscacep.correios.com.br/servicos/dnec/consultaEnderecoAction.do?&relaxation={0}&TipoCep=ALL&semelhante=N&cfm=1&Metodo=listaLogradouro&TipoConsulta=relaxation&StartRow=1&EndRow=10'.format(cep)
+    url = 'http://www.buscacep.correios.com.br/sistemas/buscacep/resultadoBuscaCepEndereco.cfm'
+    payload = {'relaxation': cep, 'tipoCEP': 'ALL', 'semelhante': 'N'}
 
-    resp = requests.get(url)
+    resp = requests.post(url, data=payload)
 
     if resp.status_code != 200:
         raise Exception("Erro acessando site dos correios!", resp.status_code)
 
-    url2 = 'http://www.buscacep.correios.com.br/servicos/dnec/detalheCEPAction.do?&Metodo=detalhe&Posicao=1&TipoCep=2&CEP='
-
-    resp2 = requests.get(url2, cookies=resp.cookies)
-
-    if resp2.status_code != 200:
-        raise Exception("Erro acessando site dos correios!", resp.status_code)
-
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(resp2.text, "html.parser")
-    value_cells = soup.findAll('td', attrs={'class': 'value'})
+    soup = BeautifulSoup(resp.text, "html.parser")
+    value_cells = soup.find('table', attrs={'class': 'tmptabela'})
+    values = list(value_cells.findAll('tr'))
 
-    texto_clean = clean_html_list(value_cells)
-    logradouro = Logradouro(texto_clean)
+    texto_clean = clean_html(str(values[1]))
+    logradouro = get_info(texto_clean)
 
     #return logradouro.as_dict()
     return logradouro
 
 def busca_cep_correios_as_dict(cep):
     return busca_cep_correios(cep).as_dict()
+
 
