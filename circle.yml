@@ -1,0 +1,7 @@
+machine:
+  python:
+    version: 3.5.0
+
+dependencies:
+  pre:
+    - pip install -U requests>2.5 beautifulsoup4>3.4

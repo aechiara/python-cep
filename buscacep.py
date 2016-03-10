@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import requests
-import re
-
-TAG_RE = re.compile(r'<[^>]+>')
-
 
 class Logradouro:
     header = ('logradouro', 'bairro', 'localidade', 'cep',)
@@ -20,28 +16,6 @@ class Logradouro:
     def __repr__(self):
         return 'Logradouro: {0} - Bairro: {1} - Localidade: {2} - CEP: {3}'.format(self.logradouro, self.bairro, self.localidade, self.cep)
 
-
-def clean_html(html=None):
-    ''' Remove as TAGs HTML '''
-    return TAG_RE.sub("", html)
-
-
-def clean_html_list(html_list=None):
-    ''' Retorna uma lista, com cada linha, dos dados sem as TAGs HTML '''
-    lista = []
-    for i in html_list:
-        lista.append(clean_html(str(i)))
-
-    return lista
-
-def get_info(resultado):
-    info = []
-
-    for i in resultado.split("\n"):
-        if len(i.strip()) > 0:
-            info.append(i.strip())
-
-    return Logradouro(info)
 
 def busca_cep_correios(cep):
     ''' Pesquisa o CEP informado no site dos correios '''
@@ -64,13 +38,16 @@ def busca_cep_correios(cep):
     value_cells = soup.find('table', attrs={'class': 'tmptabela'})
     values = list(value_cells.findAll('tr'))
 
-    texto_clean = clean_html(str(values[1]))
-    logradouro = get_info(texto_clean)
+    texto_clean = []
+    for value in values[1].findAll('td'):
+        texto_clean.append(value.get_text().strip())
 
-    #return logradouro.as_dict()
+    logradouro = Logradouro(texto_clean)
+
     return logradouro
 
 def busca_cep_correios_as_dict(cep):
     return busca_cep_correios(cep).as_dict()
 
 
+print(busca_cep_correios_as_dict('02242001'))

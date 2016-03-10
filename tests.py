@@ -1,6 +1,5 @@
 # coding: utf-8
 import unittest
-# from unittest.mock import MagicMock
 import buscacep as busca
 
 
@@ -19,7 +18,7 @@ class TestBuscaCep(unittest.TestCase):
     def test_cep_match(self):
         self.r = busca.busca_cep_correios('01310000').as_dict()
         self.resultado = set(self.resp.items()) ^ set(self.r.items())
-        self.assertEquals(0, len(self.resultado))
+        self.assertEqual(0, len(self.resultado))
 
 if __name__ == '__main__':
     unittest.main()
