@@ -1,3 +1,5 @@
+Build Status: ![alt build](https://circleci.com/gh/aechiara/python-cep.svg?style=shield&circle-token=3218c0a6295dbf94869c7106b2f06a14badc936a)
+
 Busca endereço a partir de um CEP no site dos Correios
 
 ```
