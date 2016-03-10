@@ -50,4 +50,3 @@ def busca_cep_correios_as_dict(cep):
     return busca_cep_correios(cep).as_dict()
 
 
-print(busca_cep_correios_as_dict('02242001'))
