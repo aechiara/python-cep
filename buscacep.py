@@ -3,6 +3,7 @@
 
 import requests
 
+
 class Logradouro:
     header = ('logradouro', 'bairro', 'localidade', 'cep',)
 
@@ -25,24 +26,33 @@ def busca_cep_correios(cep):
     elif not cep.isdigit() or len(cep) != 8:
         raise AttributeError("O CEP deve conter apenas 8 dígitos!")
 
-    url = 'http://www.buscacep.correios.com.br/sistemas/buscacep/resultadoBuscaCepEndereco.cfm'
-    payload = {'relaxation': cep, 'tipoCEP': 'ALL', 'semelhante': 'N'}
+    url = 'https://buscacepinter.correios.com.br/app/endereco/carrega-cep-endereco.php'
+    payload = {
+        'endereco': cep,
+        'tipoCEP': 'ALL',
+        'cepaux': '',
+        'mensagem_alerta': '',
+        'pagina': '/app/endereco/index.php'
+    }
 
     resp = requests.post(url, data=payload)
 
     if resp.status_code != 200:
         raise Exception("Erro acessando site dos correios!", resp.status_code)
 
-    from bs4 import BeautifulSoup
-    soup = BeautifulSoup(resp.text, "html.parser")
-    value_cells = soup.find('table', attrs={'class': 'tmptabela'})
-    values = list(value_cells.findAll('tr'))
+    j = resp.json()
 
-    texto_clean = []
-    for value in values[1].findAll('td'):
-        texto_clean.append(value.get_text().strip())
+    if j.get('Total') == 0:
+        return None
 
-    logradouro = Logradouro(texto_clean)
+    logradouro = Logradouro(
+        (
+            j.get('dados')[0].get('logradouroDNEC'),
+            j.get('dados')[0].get('bairro'),
+            j.get('dados')[0].get('localidade'),
+            j.get('dados')[0].get('cep')
+        )
+    )
 
     return logradouro
 
