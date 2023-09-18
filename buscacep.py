@@ -26,13 +26,15 @@ def busca_cep_correios(cep):
     elif not cep.isdigit() or len(cep) != 8:
         raise AttributeError("O CEP deve conter apenas 8 dígitos!")
 
-    url = 'https://buscacepinter.correios.com.br/app/endereco/carrega-cep-endereco.php'
+    # url = 'https://buscacepinter.correios.com.br/app/endereco/carrega-cep-endereco.php'
+    url = 'https://buscacepinter.correios.com.br/app/consulta/html/consulta-detalhes-cep.php'
     payload = {
         'endereco': cep,
         'tipoCEP': 'ALL',
         'cepaux': '',
         'mensagem_alerta': '',
-        'pagina': '/app/endereco/index.php'
+        'pagina': '/app/endereco/index.php',
+        'cep': cep,
     }
 
     resp = requests.post(url, data=payload)
@@ -42,8 +44,11 @@ def busca_cep_correios(cep):
 
     j = resp.json()
 
-    if j.get('Total') == 0:
+    if j.get('erro'):
         return None
+
+    # if j.get('Total') == 0:
+    #     return None
 
     logradouro = Logradouro(
         (
