@@ -5,17 +5,17 @@ import requests
 
 
 class Logradouro:
-    header = ('logradouro', 'bairro', 'localidade', 'cep',)
+    header = ('logradouro', 'bairro', 'localidade', 'cep', 'uf')
 
     def __init__(self, args):
-        self.logradouro, self.bairro, self.localidade, self.cep = tuple(args)
+        self.logradouro, self.bairro, self.localidade, self.cep, self.uf = tuple(args)
 
     def as_dict(self):
-        lista = [self.logradouro, self.bairro, self.localidade, self.cep, ]
+        lista = [self.logradouro, self.bairro, self.localidade, self.cep, self.uf]
         return dict(zip(Logradouro.header, lista))
 
     def __repr__(self):
-        return 'Logradouro: {0} - Bairro: {1} - Localidade: {2} - CEP: {3}'.format(self.logradouro, self.bairro, self.localidade, self.cep)
+        return 'Logradouro: {0} - Bairro: {1} - Localidade: {2} - CEP: {3} - UF: {4}'.format(self.logradouro, self.bairro, self.localidade, self.cep, self.uf)
 
 
 def busca_cep_correios(cep):
@@ -55,7 +55,8 @@ def busca_cep_correios(cep):
             j.get('dados')[0].get('logradouroDNEC'),
             j.get('dados')[0].get('bairro'),
             j.get('dados')[0].get('localidade'),
-            j.get('dados')[0].get('cep')
+            j.get('dados')[0].get('cep'),
+            j.get('dados')[0].get('uf')
         )
     )
 

@@ -9,7 +9,8 @@ class TestBuscaCep(unittest.TestCase):
             'bairro': 'Bela Vista',
             'cep': '01310000',
             'localidade': 'São Paulo',
-            'logradouro': 'Avenida Paulista - até 610 - lado par'
+            'logradouro': 'Avenida Paulista - até 610 - lado par',
+            'uf': 'SP'
         }
 
     def test_cep_not_none(self):
